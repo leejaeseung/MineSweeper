@@ -140,16 +140,17 @@
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="ljs.h" />
-    <ClInclude Include="MapCreator.h" />
-    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="MineSweeper.h" />
-    <ClInclude Include="MineSweeperSave.h" />
     <ClInclude Include="Clicker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clicker.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MineSweeper.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

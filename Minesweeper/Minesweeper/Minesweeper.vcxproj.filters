@@ -18,22 +18,19 @@
     <ClInclude Include="MineSweeper.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MenuManager.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MapCreator.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ljs.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MineSweeperSave.h">
+    <ClInclude Include="Clicker.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Clicker.h">
+    <ClInclude Include="UIManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +38,16 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MenuManager.cpp">
+    <ClCompile Include="Clicker.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Clicker.cpp">
+    <ClCompile Include="UIManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MineSweeper.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

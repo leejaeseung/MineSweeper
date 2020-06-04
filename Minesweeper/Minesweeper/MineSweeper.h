@@ -1,16 +1,26 @@
 #pragma once
-#include "MineSweeperSave.h"
-#include <memory>
+#include "UIManager.h"
+#include "Clicker.h"
+#include "Map.h"
+#include <vector>
 using std::unique_ptr;
+using std::vector;
 
-class MineSweeper : public MineSweeperSave {
+class MineSweeper{
 private:
-	unique_ptr<unique_ptr<int>> map;
+	UIManager UM;
+	Clicker clk;
+	unique_ptr<Map> map;
+	vector<Map> replayMap;
+	bool started;
+	bool saved;
+	bool end;
+	int saveIdx;
+	
 public:
 	MineSweeper();
 	~MineSweeper() = default;
-	MineSweeper(MineSweeper& ms);
-	MineSweeper(MineSweeper&& ms);
 	void play();
-
+	void replay();
+	void gameStart();
 };

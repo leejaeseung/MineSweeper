@@ -7,7 +7,7 @@ class Clicker {
 private:
     HANDLE COUT = 0;
     HANDLE CIN = 0;
-    DWORD mode;
+    DWORD md;
     WORD key;
     COORD pos;
     int get_input(const WORD* vkey, COORD* pos);

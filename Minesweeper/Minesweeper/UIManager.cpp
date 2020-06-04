@@ -1,17 +1,26 @@
-#include "MenuManager.h"
-#include "config.h"
+#include "UIManager.h"
+#include <windows.h>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
-MenuManager::MenuManager()
-    :started(false), saved(false), mode(1), width(10), height(10)
+UIManager::UIManager()
+    :mode(1), width(10), height(10)
 {
+    for (int i = 0; i < SAVE_MAX; i++)
+    {
+        saves[i] = false;
+    }
     setCursorView(0);
+    printMenu(false);
 }
 
-void MenuManager::printMenu()
+void UIManager::printMenu(const bool& saved)
 {
     int x = MENU_TITLE_X, y = MENU_TITLE_Y;
+
+    eraseConsole();
+
 	gotoxy(x, y++);
         cout << " __       __  __                             ______                                                                  ";
         gotoxy(x, y++);
@@ -104,7 +113,7 @@ void MenuManager::printMenu()
 
 
 
-void MenuManager::printEasy(const int& color, const int& bgcolor) {
+void UIManager::printEasy(const int& color, const int& bgcolor) {
     int x = MENU_EASY_X;
     int y = MENU_EASY_Y;
 
@@ -132,7 +141,7 @@ void MenuManager::printEasy(const int& color, const int& bgcolor) {
     cout << "├ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┤";
 }
 
-void MenuManager::printNormal(const int& color, const int& bgcolor) {
+void UIManager::printNormal(const int& color, const int& bgcolor) {
     int x = MENU_NORMAL_X;
     int y = MENU_NORMAL_Y;
 
@@ -160,7 +169,7 @@ void MenuManager::printNormal(const int& color, const int& bgcolor) {
     cout << "├ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┤";
 }
 
-void MenuManager::printHard(const int& color, const int& bgcolor) {
+void UIManager::printHard(const int& color, const int& bgcolor) {
     int x = MENU_HARD_X;
     int y = MENU_HARD_Y;
 
@@ -188,7 +197,7 @@ void MenuManager::printHard(const int& color, const int& bgcolor) {
     cout << "└ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┘";
 }
 
-void MenuManager::printWidthPlus1(const int& color, const int& bgcolor)
+void UIManager::printWidthPlus1(const int& color, const int& bgcolor)
 {
     int x = MENU_WIDTH_PLUS_1_X;
     int y = MENU_WIDTH_PLUS_1_Y;
@@ -205,7 +214,7 @@ void MenuManager::printWidthPlus1(const int& color, const int& bgcolor)
     cout << "┼ㅡㅡㅡ┤";
 }
 
-void MenuManager::printWidthPlus10(const int& color, const int& bgcolor)
+void UIManager::printWidthPlus10(const int& color, const int& bgcolor)
 {
     int x = MENU_WIDTH_PLUS_10_X;
     int y = MENU_WIDTH_PLUS_10_Y;
@@ -222,7 +231,7 @@ void MenuManager::printWidthPlus10(const int& color, const int& bgcolor)
     cout << "┴ㅡㅡㅡ┘";
 }
 
-void MenuManager::printWidthMinus1(const int& color, const int& bgcolor)
+void UIManager::printWidthMinus1(const int& color, const int& bgcolor)
 {
     int x = MENU_WIDTH_MINUS_1_X;
     int y = MENU_WIDTH_MINUS_1_Y;
@@ -239,7 +248,7 @@ void MenuManager::printWidthMinus1(const int& color, const int& bgcolor)
     cout << "├ㅡㅡㅡ┼";
 }
 
-void MenuManager::printWidthMinus10(const int& color, const int& bgcolor)
+void UIManager::printWidthMinus10(const int& color, const int& bgcolor)
 {
     int x = MENU_WIDTH_MINUS_10_X;
     int y = MENU_WIDTH_MINUS_10_Y;
@@ -256,7 +265,7 @@ void MenuManager::printWidthMinus10(const int& color, const int& bgcolor)
     cout << "└ㅡㅡㅡ┴";
 }
 
-void MenuManager::printWidth()
+void UIManager::printWidth()
 {
     int x = MENU_WIDTHBOX_X;
     int y = MENU_WIDTHBOX_Y;
@@ -276,7 +285,7 @@ void MenuManager::printWidth()
     cout << width;
 }
 
-void MenuManager::printHeightPlus1(const int& color, const int& bgcolor)
+void UIManager::printHeightPlus1(const int& color, const int& bgcolor)
 {
     int x = MENU_HEIGHT_PLUS_1_X;
     int y = MENU_HEIGHT_PLUS_1_Y;
@@ -293,7 +302,7 @@ void MenuManager::printHeightPlus1(const int& color, const int& bgcolor)
     cout << "┼ㅡㅡㅡ┤";
 }
 
-void MenuManager::printHeightPlus10(const int& color, const int& bgcolor)
+void UIManager::printHeightPlus10(const int& color, const int& bgcolor)
 {
     int x = MENU_HEIGHT_PLUS_10_X;
     int y = MENU_HEIGHT_PLUS_10_Y;
@@ -310,7 +319,7 @@ void MenuManager::printHeightPlus10(const int& color, const int& bgcolor)
     cout << "┴ㅡㅡㅡ┘";
 }
 
-void MenuManager::printHeightMinus1(const int& color, const int& bgcolor)
+void UIManager::printHeightMinus1(const int& color, const int& bgcolor)
 {
     int x = MENU_HEIGHT_MINUS_1_X;
     int y = MENU_HEIGHT_MINUS_1_Y;
@@ -327,7 +336,7 @@ void MenuManager::printHeightMinus1(const int& color, const int& bgcolor)
     cout << "├ㅡㅡㅡ┼";
 }
 
-void MenuManager::printHeightMinus10(const int& color, const int& bgcolor)
+void UIManager::printHeightMinus10(const int& color, const int& bgcolor)
 {
     int x = MENU_HEIGHT_MINUS_10_X;
     int y = MENU_HEIGHT_MINUS_10_Y;
@@ -344,7 +353,7 @@ void MenuManager::printHeightMinus10(const int& color, const int& bgcolor)
     cout << "└ㅡㅡㅡ┴";
 }
 
-void MenuManager::printHeight()
+void UIManager::printHeight()
 {
     int x = MENU_HEIGHTBOX_X;
     int y = MENU_HEIGHTBOX_Y;
@@ -364,7 +373,7 @@ void MenuManager::printHeight()
     cout << height;
 }
 
-void MenuManager::changeMode(const int& prevMode, const int& nextMode) {
+void UIManager::changeMode(const int& prevMode, const int& nextMode) {
     switch (prevMode) {
     case 1:
         printEasy(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
@@ -395,7 +404,7 @@ void MenuManager::changeMode(const int& prevMode, const int& nextMode) {
     mode = nextMode;
 }
 
-void MenuManager::changeWidth(const int& select, const int& nextWidth)
+void UIManager::changeWidth(const int& select, const int& nextWidth)
 {
     switch (select) {
     case 1:
@@ -425,7 +434,7 @@ void MenuManager::changeWidth(const int& select, const int& nextWidth)
     printWidth();
 }
 
-void MenuManager::changeHeight(const int& select, const int& nextHeight)
+void UIManager::changeHeight(const int& select, const int& nextHeight)
 {
     switch (select) {
     case 1:
@@ -455,7 +464,7 @@ void MenuManager::changeHeight(const int& select, const int& nextHeight)
     printHeight();
 }
 
-void MenuManager::printNewGame()
+void UIManager::printNewGame()
 {
     int x = MENU_NEW_GAME_X;
     int y = MENU_NEW_GAME_Y;
@@ -472,7 +481,7 @@ void MenuManager::printNewGame()
     cout << "└ㅡㅡㅡㅡㅡㅡㅡㅡㅡ┘";
 }
 
-void MenuManager::printContinueGame(const int& color)
+void UIManager::printContinueGame(const int& color)
 {
     int x = MENU_CONTINUE_GAME_X;
     int y = MENU_CONTINUE_GAME_Y;
@@ -493,7 +502,119 @@ void MenuManager::printContinueGame(const int& color)
     cout << "└ㅡㅡㅡㅡㅡㅡㅡㅡㅡ┘";
 }
 
-int MenuManager::process(const int& x, const int& y)
+void UIManager::printGoMenu(const double& rate)
+{
+    int x = MAP_BACK_TO_MENU_X;
+    int y = MAP_BACK_TO_MENU_Y;
+
+    gotoxy(x, y++);
+    cout << "┌ㅡㅡㅡㅡㅡㅡ┬ㅡㅡㅡㅡㅡ┐";
+    gotoxy(x, y++);
+    cout.precision(2);
+    cout << "ㅣ  M E N U  ㅣ " << setw(6) << fixed << rate << " %ㅣ";
+    gotoxy(x, y++);
+    cout << "└ㅡㅡㅡㅡㅡㅡ┴ㅡㅡㅡㅡㅡ┘";
+}
+
+void UIManager::printSaves(const int& color, const int& bgcolor, const int& idx)
+{
+    setColor(color, bgcolor);
+    cout << " S A V E " << idx << " ";
+}
+
+void UIManager::printMap(const Map& map)
+{
+    eraseConsole();
+
+    printGoMenu(map.getAchiveRate());
+
+    int x = MAP_SAVE_X;
+    int y = MAP_SAVE_Y;
+
+    for (int i = 0; i < SAVE_MAX; i++)
+    {
+        gotoxy(x, y++);
+        cout << "├ㅡㅡㅡㅡㅡㅡ┤";
+        gotoxy(x, y++);
+        cout << "ㅣ";
+        if (saves[i])
+            printSaves(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, i);
+        else
+            printSaves(MENU_UNACTIVATE_FCOLOR, MENU_UNACTIVATE_BGCOLOR, i);
+        setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+        cout << "ㅣ";
+    }
+    gotoxy(x, y);
+    cout << "└ㅡㅡㅡㅡㅡㅡ┘";
+
+    gotoxy(MAP_X - width - 1, MAP_Y - (height / 2) - 1);
+    cout << "┌";
+    for (int i = 0; i < width; i++)
+    {
+        cout << "ㅡ";
+    }
+    cout << "-┐";
+
+    for (int i = 0; i < height; i++)
+    {
+        gotoxy(MAP_X - width - 1, i + MAP_Y - (height / 2));
+        cout << "ㅣ";
+        for (int j = 0; j < width * 2; j += 2)
+        {
+            gotoxy(j + MAP_X - width, i + MAP_Y - (height / 2));
+            if (map[i][j] >= 10) {
+                cout << DEFAULT_SHAPE;
+            }
+            else if (map[i][j] == 0) {
+                cout << "  ";
+            }
+            else if (map[i][j] == -1) {
+                cout << BOMB_SHAPE;
+            }
+            else {
+                cout << map[i][j] << " ";
+            }
+        }
+        cout << "ㅣ";
+    }
+    gotoxy(MAP_X - 1 - width, MAP_Y + height - (height / 2));
+    cout << "└";
+    for (int i = 0; i < width; i++)
+    {
+        cout << "ㅡ";
+    }
+    cout << "-┘";
+}
+
+void UIManager::eraseConsole()
+{
+    for (int i = 1; i < 40; i++) {
+        gotoxy(0, i);
+        printf("%125c", ' ');
+    }
+}
+
+void UIManager::setColor(int color, int bgcolor)
+{
+    color &= 0xf;
+    bgcolor &= 0xf;
+    static HANDLE std_output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(std_output_handle, bgcolor << 4 | color);
+}
+
+void UIManager::gotoxy(const int& x, const int& y)
+{
+    COORD Pos = { x, y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+}
+
+void UIManager::setCursorView(const bool& visible)
+{
+    CONSOLE_CURSOR_INFO cursor = { 1, visible };
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
+}
+
+int UIManager::menuProcess(const int& x, const int& y, const bool& saved)
 //리턴값이 0 = 메뉴 유지, 1 = 처음부터 , 2 = 이어하기
 {
     if (x > MENU_EASY_X + 1 && x <= MENU_HARD_X + MENU_LEVEL_COL && y > MENU_EASY_Y&& y <= MENU_HARD_Y + MENU_LEVEL_ROW) {
@@ -593,32 +714,68 @@ int MenuManager::process(const int& x, const int& y)
     return 0;
 }
 
-bool MenuManager::getSaved()
+int UIManager::gameProcess(const int& x, const int& y, const bool& end, int* saveIdx)
 {
-    return saved;
+    if (x > MAP_X - width && x <= MAP_X + width + 1 && y > MAP_Y - (height / 2) - 1 && y <= MAP_Y + (height / 2) - 1) {
+        if (end) return 0;  //게임이 끝났다면 맵을 클릭해도 반응x
+        return 1;
+    }
+    else if (x > MAP_BACK_TO_MENU_X&& x <= MAP_BACK_TO_MENU_X + MAP_MENU_COL && y > MAP_BACK_TO_MENU_Y&& y <= MAP_BACK_TO_MENU_Y + MAP_MENU_ROW) {
+        //메뉴로 돌아가기 버튼
+        return -1;
+    }
+    else if (x > MAP_SAVE_X&& x <= MAP_SAVE_X + MAP_MENU_COL && y > MAP_SAVE_Y&& y <= MAP_SAVE_Y + (MAP_MENU_ROW + 1) * SAVE_MAX - 1) {
+        //세이브 버튼들 클릭
+        if (end) return 0;          //게임이 끝났다면 저장을 클릭해도 반응x
+        for (int i = 0; i < SAVE_MAX; i++)
+        {
+            if (y > MAP_SAVE_Y + i * 2 && y <= MAP_SAVE_Y + (i + 1) * 2 - 1) {
+                *saveIdx = i;
+                gotoxy(MAP_SAVE_X + 2, MAP_SAVE_Y + (i + 1) * 2 - 1);
+                printSaves(MENU_CHOOSE_FCOLOR, MENU_CHOOSE_BGCOLOR, i);
+                Sleep(CLICK_DELAY);
+                gotoxy(MAP_SAVE_X + 2, MAP_SAVE_Y + (i + 1) * 2 - 1);
+                printSaves(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, i);
+                break;
+            }
+        }
+        return 2;
+    }
+    return 0;
 }
 
-bool MenuManager::getStarted()
+void UIManager::tightXY(int* x, int* y)
 {
-    return started;
+    if ((MAP_X - width + 1) % 2 == 0) {
+        if ((*x) % 2 == 1)
+            (*x)--;
+    }
+    else {
+        if ((*x) % 2 == 0)
+            (*x)--;
+    }
+    *x -= (MAP_X - width + 1);
+    *y -= (MAP_Y - (height / 2));
 }
 
-int MenuManager::getMode()
+void UIManager::reset()
+{
+    this->mode = 1;
+    this->width = 10;
+    this->height = 10;
+}
+
+int UIManager::getMode()
 {
     return mode;
 }
 
-int MenuManager::getWidth()
+int UIManager::getWidth()
 {
     return width;
 }
 
-int MenuManager::getHeight()
+int UIManager::getHeight()
 {
     return height;
-}
-
-void MenuManager::setSave(bool& saved)
-{
-    this->saved = saved;
 }

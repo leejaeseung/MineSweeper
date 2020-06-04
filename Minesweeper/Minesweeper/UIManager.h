@@ -1,13 +1,17 @@
 #pragma once
+#include <memory>
+#include "Map.h"
+#include "config.h"
+using std::unique_ptr;
 
-
-class MenuManager {
-private:
-	bool started;
-	bool saved;
+class UIManager {
+protected:
 	int mode;
 	int width;
 	int height;
+	bool saves[SAVE_MAX];
+	
+private:
 	void printEasy(const int& color, const int& bgcolor);
 	void printNormal(const int& color, const int& bgcolor);
 	void printHard(const int& color, const int& bgcolor);
@@ -26,15 +30,25 @@ private:
 	void changeHeight(const int& select, const int& nextHeight);
 	void printNewGame();
 	void printContinueGame(const int& color);
+
+	void printGoMenu(const double& rate);
+	void printSaves(const int& color, const int& bgcolor, const int& idx);
+
+	void eraseConsole();
+	
+	void setColor(int color, int bgcolor);
+	void gotoxy(const int& x, const int& y);
+	void setCursorView(const bool& visible);
 public:
-	MenuManager();
-	~MenuManager() = default;
-	void printMenu();
-	int process(const int& x, const int& y);
-	bool getSaved();
-	bool getStarted();
+	UIManager();
+	~UIManager() = default;
+	void printMenu(const bool& saved);
+	void printMap(const Map& map);
+	int menuProcess(const int& x, const int& y, const bool& saved);
+	int gameProcess(const int& x, const int& y, const bool& end, int* saveIdx);
+	void tightXY(int* x, int* y);
+	void reset();
 	int getMode();
 	int getWidth();
 	int getHeight();
-	void setSave(bool& saved);
 };

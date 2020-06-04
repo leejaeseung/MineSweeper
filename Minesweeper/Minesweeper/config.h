@@ -1,12 +1,15 @@
 #pragma once
-#include <windows.h>
+//UI관련 기호 상수
 
 //게임 진행 관련
-#define CLICK_DELAY 250
+#define CLICK_DELAY 100
 #define MINE_COLOR 120
-#define MINE_SHAPE "●"
+#define DEFAULT_SHAPE "●"
 #define BOMB_COLOR 96
 #define BOMB_SHAPE "※"
+#define MAP_X 60		//맵의 중앙 x
+#define MAP_Y 20		//맵의 중앙 y
+#define SAVE_MAX 3		//세이브 가능한 최대 개수
 
 //메뉴 글자 좌표
 #define MENU_TITLE_X 2
@@ -75,22 +78,9 @@
 #define MENU_CONTINUE_GAME_X 91
 #define MENU_CONTINUE_GAME_Y 30
 
-void setCursorView(const bool& visible)
-{
-    CONSOLE_CURSOR_INFO cursor = { 1, visible };
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
-}
-
-void gotoxy(const int& x, const int& y)
-{
-    COORD Pos = { x, y };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
-}
-
-void setColor(int color, int bgcolor)
-{
-    color &= 0xf;
-    bgcolor &= 0xf;
-    static HANDLE std_output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(std_output_handle, bgcolor << 4 | color);
-}
+#define MAP_MENU_ROW 1
+#define MAP_MENU_COL 12
+#define MAP_BACK_TO_MENU_X 1
+#define MAP_BACK_TO_MENU_Y 3
+#define MAP_SAVE_X 1
+#define MAP_SAVE_Y 5

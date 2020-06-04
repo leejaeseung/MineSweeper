@@ -6,8 +6,8 @@ Clicker::Clicker()
     COUT = GetStdHandle(STD_OUTPUT_HANDLE);
 
     // 마우스 활성화, 콘솔 모드 설정
-    GetConsoleMode(CIN, &mode);
-    SetConsoleMode(CIN, mode & ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT);
+    GetConsoleMode(CIN, &md);
+    SetConsoleMode(CIN, md & ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT);
 }
 
 int Clicker::get_input(const WORD* vkey, COORD* pos)
@@ -50,7 +50,6 @@ pair<int, int> Clicker::getPos()
 
     while (true) {
         if (be_input()) {
-            Sleep(50);
             if (get_input(&key, &pos) != 0)
             {
                 return pair<int, int>{pos.X, pos.Y};
