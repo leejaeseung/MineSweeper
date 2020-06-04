@@ -31,6 +31,9 @@ private:
 	void printNewGame();
 	void printContinueGame(const int& color);
 
+	void printBoom();
+	void printClear();
+
 	void printGoMenu(const double& rate);
 	void printSaves(const int& color, const int& bgcolor, const int& idx);
 
@@ -44,6 +47,7 @@ public:
 	~UIManager() = default;
 	void printMenu(const bool& saved);
 	void printMap(const Map& map);
+	void printEndMsg(const bool& win);
 	int menuProcess(const int& x, const int& y, const bool& saved);
 	int gameProcess(const int& x, const int& y, const bool& end, int* saveIdx);
 	void tightXY(int* x, int* y);

@@ -502,6 +502,54 @@ void UIManager::printContinueGame(const int& color)
     cout << "└ㅡㅡㅡㅡㅡㅡㅡㅡㅡ┘";
 }
 
+void UIManager::printBoom()
+{
+
+    int x = END_MSG_X;
+    int y = END_MSG_Y;
+
+    gotoxy(x, y++);
+    cout << " /$$$$$$$   /$$$$$$   /$$$$$$  /$$      /$$       /$$ /$$ /$$";
+    gotoxy(x, y++);
+    cout << "| $$__  $$ /$$__  $$ /$$__  $$| $$$    /$$$      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$  \\ $$| $$  \\ $$| $$  \\ $$| $$$$  /$$$$      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$$$$$$ | $$  | $$| $$  | $$| $$ $$/$$ $$      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$__  $$| $$  | $$| $$  | $$| $$  $$$| $$      |__/|__/|__/";
+    gotoxy(x, y++);
+    cout << "| $$  \\ $$| $$  | $$| $$  | $$| $$\\  $ | $$                  ";
+    gotoxy(x, y++);
+    cout << "| $$$$$$$/|  $$$$$$/|  $$$$$$/| $$ \\/  | $$       /$$ /$$ /$$";
+    gotoxy(x, y++);
+    cout << "|_______/  \\______/  \\______/ |__/     |__/      |__/|__/|__/";
+}
+
+void UIManager::printClear()
+{
+
+    int x = END_MSG_X;
+    int y = END_MSG_Y;
+
+    gotoxy(x, y++);
+    cout << "  /$$$$$$  /$$       /$$$$$$$$  /$$$$$$  /$$$$$$$        /$$ /$$ /$$";
+    gotoxy(x, y++);
+    cout << " /$$__  $$| $$      | $$_____/ /$$__  $$| $$__  $$      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$  \\__/| $$      | $$      | $$  \\ $$| $$  \\ $$      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$      | $$      | $$$$$   | $$$$$$$$| $$$$$$$/      | $$| $$| $$";
+    gotoxy(x, y++);
+    cout << "| $$      | $$      | $$__/   | $$__  $$| $$__  $$      |__/|__/|__/";
+    gotoxy(x, y++);
+    cout << "| $$    $$| $$      | $$      | $$  | $$| $$  \\ $$                  ";
+    gotoxy(x, y++);
+    cout << "|  $$$$$$/| $$$$$$$$| $$$$$$$$| $$  | $$| $$  | $$       /$$ /$$ /$$";
+    gotoxy(x, y++);
+    cout << " \\______/ |________/|________/|__/  |__/|__/  |__/      |__/|__/|__/";
+}
+
 void UIManager::printGoMenu(const double& rate)
 {
     int x = MAP_BACK_TO_MENU_X;
@@ -584,6 +632,24 @@ void UIManager::printMap(const Map& map)
         cout << "ㅡ";
     }
     cout << "-┘";
+}
+
+void UIManager::printEndMsg(const bool& win)
+{
+    Sleep(750);
+    for (int i = 0; i < 3; i++)
+    {
+        eraseConsole();
+        Sleep(200);
+        if (win) {
+            printClear();
+        }
+        else {
+            printBoom();
+        }
+        Sleep(350);
+    }
+    
 }
 
 void UIManager::eraseConsole()
@@ -722,7 +788,7 @@ int UIManager::gameProcess(const int& x, const int& y, const bool& end, int* sav
     }
     else if (x > MAP_BACK_TO_MENU_X&& x <= MAP_BACK_TO_MENU_X + MAP_MENU_COL && y > MAP_BACK_TO_MENU_Y&& y <= MAP_BACK_TO_MENU_Y + MAP_MENU_ROW) {
         //메뉴로 돌아가기 버튼
-        return -1;
+        return 2;
     }
     else if (x > MAP_SAVE_X&& x <= MAP_SAVE_X + MAP_MENU_COL && y > MAP_SAVE_Y&& y <= MAP_SAVE_Y + (MAP_MENU_ROW + 1) * SAVE_MAX - 1) {
         //세이브 버튼들 클릭
@@ -739,7 +805,7 @@ int UIManager::gameProcess(const int& x, const int& y, const bool& end, int* sav
                 break;
             }
         }
-        return 2;
+        return 3;
     }
     return 0;
 }

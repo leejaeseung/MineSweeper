@@ -11,6 +11,9 @@
 #define MAP_Y 20		//맵의 중앙 y
 #define SAVE_MAX 3		//세이브 가능한 최대 개수
 
+#define END_MSG_X 28
+#define END_MSG_Y 15
+
 //메뉴 글자 좌표
 #define MENU_TITLE_X 2
 #define MENU_TITLE_Y 1

@@ -16,12 +16,8 @@ class Map {
 		const int mv_x[8] = { 0, 0, -2, -2, -2, 2, 2, 2 };
 		const int mv_y[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
 		int checkMine(const int& x, const int& y);
-		void end(const bool& win);
+		void end();
 	public:
-		/*int mineCnt;
-		int openCnt;
-		int allCnt;*/
-
 		Map() = delete;
 		Map(const int& mode, const int& width, const int& height);
 		~Map() = default;

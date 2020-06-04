@@ -19,7 +19,7 @@ Map::Map(const int& mode, const int& width, const int& height)
         int x = rand() % (width * 2);
         int y = rand() % height;
 
-        if (map[y][x] == -2 || x % 2 == 1) {
+        if (map[y][x] == 10 || x % 2 == 1) {
             //가로는 한 칸이 2byte이므로 짝수 칸만 판단, 지뢰가 이미 있으면 다시 생성
             i--;
             continue;
@@ -58,15 +58,17 @@ int Map::checkMine(const int& x, const int& y)
     return cnt + 11;
 }
 
-void Map::end(const bool& win)
+void Map::end()
 //게임이 끝났을 때 모든 지뢰를 밝혀줌.
 {
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width * 2; j++)
         {
-            if (map[i][j] == 10)
+            if (map[i][j] == 10) {
                 map[i][j] = -1;
+                map[i][j + 1] = -1;
+            }
         }
     }
 }
@@ -86,18 +88,19 @@ Map::Map(const Map& m)
 
 int Map::click(const int& x, const int& y)
 {
-    if (map[y][x] == 10 || map[y][x + 1] == 10) {       //지뢰를 선택할 시 -1 반환
-        end(false);
-        return -1;
+    if (map[y][x] == 10 || map[y][x + 1] == 10) {       //지뢰를 선택할 시
+        end();
+        return 3;
     }
-    if (map[y][x] < 11)  return 0;  //이미 밝혀진 곳이라면 0 반환
+    if (map[y][x] < 11)  return 0;  //이미 밝혀진 곳이라면
     map[y][x] -= 11;                //클릭한 곳을 밝혀줌.
     map[y][x + 1] -= 11;
     openCnt++;
 
     if (allCnt - openCnt == mineCnt) {
-        end(true);
-        return -1;
+        // 클리어한 경우
+        end();
+        return 2;
     }
 
     if (map[y][x] == 0) {
@@ -111,7 +114,7 @@ int Map::click(const int& x, const int& y)
             click(nx, ny);
         }
     }
-    return 1;   //하나라도 밝혔다면 1반환
+    return 1;   //하나라도 밝혔다면
 }
 
 unique_ptr<int[]>& Map::operator[](const int& idx) const
