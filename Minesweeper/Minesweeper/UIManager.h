@@ -39,6 +39,7 @@ private:
 	void printGoMenu(const double& rate);
 	void printSaves(const int& color, const int& bgcolor, const int& idx);
 	void printLoadZone(int& x, int& y, const int& color, const int& bgcolor, const Map& nowMap);
+	void printLoadClose(const int& color, const int& bgcolor);
 
 	void eraseConsole();
 	
@@ -55,7 +56,7 @@ public:
 	int menuProcess(const int& x, const int& y, const bool& saved, const bool& load, int* loadIdx, const vector<Map>& saveMap);
 	int gameProcess(const int& x, const int& y, const bool& end, int* saveIdx);
 	void tightXY(int* x, int* y);
-	void reset();
+	void set(const int mode, const int width, const int height);
 	int getMode();
 	int getWidth();
 	int getHeight();

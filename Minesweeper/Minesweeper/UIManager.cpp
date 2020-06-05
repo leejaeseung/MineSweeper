@@ -134,13 +134,27 @@ void UIManager::printLoadZone(int& x, int& y, const int& color, const int& bgcol
     cout << "太";
 }
 
+void UIManager::printLoadClose(const int& color, const int& bgcolor)
+{
+    cout << "太";
+    setColor(color, bgcolor);
+    cout << "         C     L     O      S      E         ";
+    setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+    cout << "太";
+}
+
 void UIManager::printLoad(const vector<Map>& saveMap)
 {
-    int x = LOAD_X;
-    int y = LOAD_Y;
+    int x = LOAD_CLOSE_X;
+    int y = LOAD_CLOSE_Y;
 
     gotoxy(x, y++);
     cout << "忙天天天天天天天天天天天天天天天天天天天天天天天忖";
+    gotoxy(x, y++);
+    printLoadClose(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+
+    gotoxy(x, y++);
+    cout << "戍天天天天天天天天天天天天天天天天天天天天天天天扣";
     for (int i = 0; i < SAVE_MAX; i++)
     {
         gotoxy(x, y++);
@@ -853,9 +867,13 @@ int UIManager::menuProcess(const int& x, const int& y, const bool& saved, const 
             }
             return 3;
         }
-        /*else if () {
-    
-        }*/
+        else if (x > LOAD_CLOSE_X + 1 && x <= LOAD_CLOSE_X + LOAD_COL && y > LOAD_CLOSE_Y&& y <= LOAD_CLOSE_Y + 1) {
+            gotoxy(LOAD_CLOSE_X, LOAD_CLOSE_Y + 1);
+            printLoadClose(MENU_CHOOSE_FCOLOR, MENU_CHOOSE_BGCOLOR);
+            Sleep(CLICK_DELAY);
+            printLoadClose(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+            return 4;
+        }
         else
             return 0;
     }
@@ -909,11 +927,11 @@ void UIManager::tightXY(int* x, int* y)
     *y -= (MAP_Y - (height / 2));
 }
 
-void UIManager::reset()
+void UIManager::set(const int mode, const int width, const int height)
 {
-    this->mode = 1;
-    this->width = 10;
-    this->height = 10;
+    this->mode = mode;
+    this->width = width;
+    this->height = height;
 }
 
 int UIManager::getMode()

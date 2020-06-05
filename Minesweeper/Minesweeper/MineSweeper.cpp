@@ -8,6 +8,7 @@
 #define NEW_GAME 1
 #define CONTINUE_GAME 2
 #define LOAD_GAME 3
+#define LOAD_CLOSE 4
 
 #define CLICK_MAP 1
 #define CLICK_BACK_TO_MENU 2
@@ -72,7 +73,7 @@ void MineSweeper::play()
             case CLICK_BACK_TO_MENU:
                 //메뉴로 돌아감.
                 started = false;
-                UM.reset();
+                UM.set(1, 10, 10);
                 UM.printMenu(saved);
                 continue;
             case CLICK_SAVE:
@@ -98,6 +99,10 @@ void MineSweeper::play()
             case LOAD_GAME:
                 map = saveMap[loadIdx];
                 break;
+            case LOAD_CLOSE:
+                load = false;
+                UM.printMenu(saved);
+                continue;
             default:
                 break;
             }
@@ -120,6 +125,7 @@ void MineSweeper::gameStart()
     started = true;
     end = false;
     load = false;
+    UM.set(map.getMode(), map.getWidth(), map.getHeight());
     UM.printMap(map);
     replayMap.clear();
     replayMap.push_back(map);

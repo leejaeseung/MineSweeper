@@ -74,7 +74,7 @@ void Map::end()
 }
 
 Map::Map(const Map& m)
-    :mode(m.mode), width(m.width), height(m.height), mineCnt(m.mineCnt), openCnt(m.openCnt), allCnt(m.allCnt), map(make_unique<unique_ptr<int[]>[]>(height))
+    :mode(m.mode), width(m.width), height(m.height), mineCnt(m.mineCnt), openCnt(m.openCnt), allCnt(m.allCnt), map(make_unique<unique_ptr<int[]>[]>(m.height))
 {
     for (int i = 0; i < height; i++)
     {
@@ -119,7 +119,7 @@ int Map::click(const int& x, const int& y)
 
 unique_ptr<int[]>& Map::operator[](const int& idx) const
 {
-    if(idx >= 0 && idx < width)
+    if(idx >= 0 && idx < height)
         return map[idx];
     else {
         exit(0);
@@ -156,6 +156,21 @@ double Map::getAchiveRate() const
     return ((double)(openCnt) / (double)(allCnt - mineCnt)) * 100.0;
 }
 
+int Map::getWidth()
+{
+    return width;
+}
+
+int Map::getHeight()
+{
+    return height;
+}
+
+int Map::getMode()
+{
+    return mode;
+}
+
 int Map::getWidth() const
 {
     return width;
@@ -164,4 +179,9 @@ int Map::getWidth() const
 int Map::getHeight() const
 {
     return height;
+}
+
+int Map::getMode() const
+{
+    return mode;
 }

@@ -26,6 +26,10 @@ class Map {
 		unique_ptr<int[]>& operator[](const int& idx) const;
 		Map& operator=(const Map& myMap) noexcept;
 		double getAchiveRate() const;
+		int getWidth();
+		int getHeight();
+		int getMode();
 		int getWidth() const;
 		int getHeight() const;
+		int getMode() const;
 };
