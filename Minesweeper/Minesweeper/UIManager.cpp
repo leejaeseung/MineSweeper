@@ -13,6 +13,7 @@ UIManager::UIManager()
     }
     setCursorView(0);
     printMenu(false);
+    cout.precision(2);
 }
 
 void UIManager::printMenu(const bool& saved)
@@ -109,6 +110,61 @@ void UIManager::printMenu(const bool& saved)
             printContinueGame(MENU_DEFAULT_FCOLOR);
         else
             printContinueGame(MENU_UNACTIVATE_FCOLOR);
+}
+
+void UIManager::printLoadZone(int& x, int& y, const int& color, const int& bgcolor, const Map& nowMap)
+{
+    gotoxy(x, y++);
+    cout << "ㅣ";
+    setColor(color, bgcolor);
+    cout << "          W I D T H :     " << nowMap.getWidth() << "                 ";
+    setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+    cout << "ㅣ";
+    gotoxy(x, y++);
+    cout << "ㅣ";
+    setColor(color, bgcolor);
+    cout << "        H E I G T H :     " << nowMap.getHeight() << "                 ";
+    setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+    cout << "ㅣ";
+    gotoxy(x, y++);
+    cout << "ㅣ";
+    setColor(color, bgcolor);
+    cout << "    P R O G R E S S : " << setw(6) << fixed << nowMap.getAchiveRate() << " %               ";
+    setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+    cout << "ㅣ";
+}
+
+void UIManager::printLoad(const vector<Map>& saveMap)
+{
+    int x = LOAD_X;
+    int y = LOAD_Y;
+
+    gotoxy(x, y++);
+    cout << "┌ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┐";
+    for (int i = 0; i < SAVE_MAX; i++)
+    {
+        gotoxy(x, y++);
+        cout << "ㅣ             S    A    V    E    " << i << "           ㅣ";
+        gotoxy(x, y++);
+        cout << "├ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┤";
+        
+        if (saves[i]) {
+            printLoadZone(x, y, MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, saveMap[i]);
+        }
+        else {
+            gotoxy(x, y++);
+            cout << "ㅣ                                             ㅣ";
+            gotoxy(x, y++);
+            cout << "ㅣ             N    O    N    E                ㅣ";
+            gotoxy(x, y++);
+            cout << "ㅣ                                             ㅣ";
+        }
+        gotoxy(x, y++);
+        if(i < SAVE_MAX - 1)
+            cout << "├ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┤";
+        else
+            cout << "└ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ┘";
+    }
 }
 
 
@@ -558,7 +614,6 @@ void UIManager::printGoMenu(const double& rate)
     gotoxy(x, y++);
     cout << "┌ㅡㅡㅡㅡㅡㅡ┬ㅡㅡㅡㅡㅡ┐";
     gotoxy(x, y++);
-    cout.precision(2);
     cout << "ㅣ  M E N U  ㅣ " << setw(6) << fixed << rate << " %ㅣ";
     gotoxy(x, y++);
     cout << "└ㅡㅡㅡㅡㅡㅡ┴ㅡㅡㅡㅡㅡ┘";
@@ -680,102 +735,129 @@ void UIManager::setCursorView(const bool& visible)
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
 }
 
-int UIManager::menuProcess(const int& x, const int& y, const bool& saved)
+int UIManager::menuProcess(const int& x, const int& y, const bool& saved, const bool& load, int* loadIdx, const vector<Map>& saveMap)
 //리턴값이 0 = 메뉴 유지, 1 = 처음부터 , 2 = 이어하기
 {
-    if (x > MENU_EASY_X + 1 && x <= MENU_HARD_X + MENU_LEVEL_COL && y > MENU_EASY_Y&& y <= MENU_HARD_Y + MENU_LEVEL_ROW) {
-        //난이도를 선택했을 때
-        int nextMode = 0;
-        if (x > MENU_EASY_X&& x <= MENU_EASY_X + MENU_LEVEL_COL && y > MENU_EASY_Y&& y <= MENU_EASY_Y + MENU_LEVEL_ROW) {
-            //Easy 모드 선택 시
-            nextMode = 1;
+    if (!load) {
+        //불러오기 상태가 아닐 때
+        if (x > MENU_EASY_X + 1 && x <= MENU_HARD_X + MENU_LEVEL_COL && y > MENU_EASY_Y&& y <= MENU_HARD_Y + MENU_LEVEL_ROW) {
+            //난이도를 선택했을 때
+            int nextMode = 0;
+            if (x > MENU_EASY_X&& x <= MENU_EASY_X + MENU_LEVEL_COL && y > MENU_EASY_Y&& y <= MENU_EASY_Y + MENU_LEVEL_ROW) {
+                //Easy 모드 선택 시
+                nextMode = 1;
+            }
+            else if (x > MENU_NORMAL_X&& x <= MENU_NORMAL_X + MENU_LEVEL_COL && y > MENU_NORMAL_Y&& y <= MENU_NORMAL_Y + MENU_LEVEL_ROW) {
+                //Normal 모드 선택 시
+                nextMode = 2;
+            }
+            else if (x > MENU_HARD_X&& x <= MENU_HARD_X + MENU_LEVEL_COL && y > MENU_HARD_Y&& y <= MENU_HARD_Y + MENU_LEVEL_ROW) {
+                //Hard 모드 선택 시
+                nextMode = 3;
+            }
+            else return 0;
+            changeMode(mode, nextMode);
         }
-        else if (x > MENU_NORMAL_X&& x <= MENU_NORMAL_X + MENU_LEVEL_COL && y > MENU_NORMAL_Y&& y <= MENU_NORMAL_Y + MENU_LEVEL_ROW) {
-            //Normal 모드 선택 시
-            nextMode = 2;
+        else if (x > MENU_WIDTH_MINUS_1_X + 1 && x <= MENU_WIDTH_PLUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_1_Y&& y <= MENU_WIDTH_PLUS_10_Y + MENU_MAP_ROW) {
+            //Width를 눌렀을 때 
+            int addWidth = 0;
+            int select = 0;
+            if (x > MENU_WIDTH_MINUS_1_X&& x <= MENU_WIDTH_MINUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_1_Y&& y <= MENU_WIDTH_MINUS_1_Y + MENU_MAP_ROW) {
+                // -1 을 눌렀을 때
+                select = 1;
+                addWidth = -1;
+            }
+            else if (x > MENU_WIDTH_MINUS_10_X&& x <= MENU_WIDTH_MINUS_10_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_10_Y&& y <= MENU_WIDTH_MINUS_10_Y + MENU_MAP_ROW) {
+                // -10 을 눌렀을 때
+                select = 2;
+                addWidth = -10;
+            }
+            else if (x > MENU_WIDTH_PLUS_1_X&& x <= MENU_WIDTH_PLUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_PLUS_1_Y&& y <= MENU_WIDTH_PLUS_1_Y + MENU_MAP_ROW) {
+                // +1 을 눌렀을 때
+                select = 3;
+                addWidth = 1;
+            }
+            else if (x > MENU_WIDTH_PLUS_10_X&& x <= MENU_WIDTH_PLUS_10_X + MENU_MAP_COL && y > MENU_WIDTH_PLUS_10_Y&& y <= MENU_WIDTH_PLUS_10_Y + MENU_MAP_ROW) {
+                // +10 을 눌렀을 때
+                select = 4;
+                addWidth = 10;
+            }
+            else
+                return 0;
+            if (width + addWidth < 10)
+                width = 10;
+            else if (width + addWidth > 30)
+                width = 30;
+            else
+                width = width + addWidth;
+
+            changeWidth(select, width);
         }
-        else if (x > MENU_HARD_X&& x <= MENU_HARD_X + MENU_LEVEL_COL && y > MENU_HARD_Y&& y <= MENU_HARD_Y + MENU_LEVEL_ROW) {
-            //Hard 모드 선택 시
-            nextMode = 3;
+        else if (x > MENU_HEIGHT_MINUS_1_X + 1 && x <= MENU_HEIGHT_PLUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_1_Y&& y <= MENU_HEIGHT_PLUS_10_Y + MENU_MAP_ROW) {
+            //Height를 눌렀을 때 
+            int addHeight = 0;
+            int select = 0;
+            if (x > MENU_HEIGHT_MINUS_1_X&& x <= MENU_HEIGHT_MINUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_1_Y&& y <= MENU_HEIGHT_MINUS_1_Y + MENU_MAP_ROW) {
+                // -1 을 눌렀을 때
+                select = 1;
+                addHeight = -1;
+            }
+            else if (x > MENU_HEIGHT_MINUS_10_X&& x <= MENU_HEIGHT_MINUS_10_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_10_Y&& y <= MENU_HEIGHT_MINUS_10_Y + MENU_MAP_ROW) {
+                // -10 을 눌렀을 때
+                select = 2;
+                addHeight = -10;
+            }
+            else if (x > MENU_HEIGHT_PLUS_1_X&& x <= MENU_HEIGHT_PLUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_PLUS_1_Y&& y <= MENU_HEIGHT_PLUS_1_Y + MENU_MAP_ROW) {
+                // +1 을 눌렀을 때
+                select = 3;
+                addHeight = 1;
+            }
+            else if (x > MENU_HEIGHT_PLUS_10_X&& x <= MENU_HEIGHT_PLUS_10_X + MENU_MAP_COL && y > MENU_HEIGHT_PLUS_10_Y&& y <= MENU_HEIGHT_PLUS_10_Y + MENU_MAP_ROW) {
+                // +10 을 눌렀을 때
+                select = 4;
+                addHeight = 10;
+            }
+            else
+                return 0;
+            if (height + addHeight < 10)
+                height = 10;
+            else if (height + addHeight > 30)
+                height = 30;
+            else
+                height = height + addHeight;
+
+            changeHeight(select, height);
         }
-        else return 0;
-        changeMode(mode, nextMode);
+        else if (x > MENU_NEW_GAME_X + 1 && x <= MENU_NEW_GAME_X + MENU_START_COL && y > MENU_NEW_GAME_Y&& y <= MENU_NEW_GAME_Y + MENU_START_ROW) {
+            return 1;
+        }
+        else if (x > MENU_CONTINUE_GAME_X + 1 && x <= MENU_CONTINUE_GAME_X + MENU_START_COL && y > MENU_CONTINUE_GAME_Y&& y <= MENU_CONTINUE_GAME_Y + MENU_START_ROW && saved) {
+            return 2;
+        }
     }
-    else if (x > MENU_WIDTH_MINUS_1_X + 1 && x <= MENU_WIDTH_PLUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_1_Y&& y <= MENU_WIDTH_PLUS_10_Y + MENU_MAP_ROW) {
-        //Width를 눌렀을 때 
-        int addWidth = 0;
-        int select = 0;
-        if (x > MENU_WIDTH_MINUS_1_X&& x <= MENU_WIDTH_MINUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_1_Y&& y <= MENU_WIDTH_MINUS_1_Y + MENU_MAP_ROW) {
-            // -1 을 눌렀을 때
-            select = 1;
-            addWidth = -1;
+    else {
+        if (x > LOAD_X + 1&& x <= LOAD_X + LOAD_COL && y > LOAD_Y&& y <= LOAD_Y + (LOAD_ROW * SAVE_MAX) - 1) {
+            for (int i = 0; i < SAVE_MAX; i++)
+            {
+                if (saves[i] && y > LOAD_Y + i * 6 + 2 && y <= LOAD_Y + (i + 1) * 6 - 1) {
+                    *loadIdx = i;
+                    //누른 버튼의 인덱스를 저장.
+                    int start_x = LOAD_X;
+                    int start_y = LOAD_Y + i * 6 + 3;
+                    printLoadZone(start_x, start_y, MENU_CHOOSE_FCOLOR, MENU_CHOOSE_BGCOLOR, saveMap[i]);
+                    Sleep(CLICK_DELAY);
+                    start_y -= 3;
+                    printLoadZone(start_x, start_y, MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, saveMap[i]);
+                    break;
+                }
+            }
+            return 3;
         }
-        else if (x > MENU_WIDTH_MINUS_10_X&& x <= MENU_WIDTH_MINUS_10_X + MENU_MAP_COL && y > MENU_WIDTH_MINUS_10_Y&& y <= MENU_WIDTH_MINUS_10_Y + MENU_MAP_ROW) {
-            // -10 을 눌렀을 때
-            select = 2;
-            addWidth = -10;
-        }
-        else if (x > MENU_WIDTH_PLUS_1_X&& x <= MENU_WIDTH_PLUS_1_X + MENU_MAP_COL && y > MENU_WIDTH_PLUS_1_Y&& y <= MENU_WIDTH_PLUS_1_Y + MENU_MAP_ROW) {
-            // +1 을 눌렀을 때
-            select = 3;
-            addWidth = 1;
-        }
-        else if (x > MENU_WIDTH_PLUS_10_X&& x <= MENU_WIDTH_PLUS_10_X + MENU_MAP_COL && y > MENU_WIDTH_PLUS_10_Y&& y <= MENU_WIDTH_PLUS_10_Y + MENU_MAP_ROW) {
-            // +10 을 눌렀을 때
-            select = 4;
-            addWidth = 10;
-        }
+        /*else if () {
+    
+        }*/
         else
             return 0;
-        if (width + addWidth < 10)
-            width = 10;
-        else if (width + addWidth > 30)
-            width = 30;
-        else
-            width = width + addWidth;
-
-        changeWidth(select, width);
-    }
-    else if (x > MENU_HEIGHT_MINUS_1_X + 1 && x <= MENU_HEIGHT_PLUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_1_Y&& y <= MENU_HEIGHT_PLUS_10_Y + MENU_MAP_ROW) {
-        //Height를 눌렀을 때 
-        int addHeight = 0;
-        int select = 0;
-        if (x > MENU_HEIGHT_MINUS_1_X&& x <= MENU_HEIGHT_MINUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_1_Y&& y <= MENU_HEIGHT_MINUS_1_Y + MENU_MAP_ROW) {
-            // -1 을 눌렀을 때
-            select = 1;
-            addHeight = -1;
-        }
-        else if (x > MENU_HEIGHT_MINUS_10_X&& x <= MENU_HEIGHT_MINUS_10_X + MENU_MAP_COL && y > MENU_HEIGHT_MINUS_10_Y&& y <= MENU_HEIGHT_MINUS_10_Y + MENU_MAP_ROW) {
-            // -10 을 눌렀을 때
-            select = 2;
-            addHeight = -10;
-        }
-        else if (x > MENU_HEIGHT_PLUS_1_X&& x <= MENU_HEIGHT_PLUS_1_X + MENU_MAP_COL && y > MENU_HEIGHT_PLUS_1_Y&& y <= MENU_HEIGHT_PLUS_1_Y + MENU_MAP_ROW) {
-            // +1 을 눌렀을 때
-            select = 3;
-            addHeight = 1;
-        }
-        else if (x > MENU_HEIGHT_PLUS_10_X&& x <= MENU_HEIGHT_PLUS_10_X + MENU_MAP_COL && y > MENU_HEIGHT_PLUS_10_Y&& y <= MENU_HEIGHT_PLUS_10_Y + MENU_MAP_ROW) {
-            // +10 을 눌렀을 때
-            select = 4;
-            addHeight = 10;
-        }
-        else
-            return 0;
-        if (height + addHeight < 10)
-            height = 10;
-        else if (height + addHeight > 30)
-            height = 30;
-        else
-            height = height + addHeight;
-
-        changeHeight(select, height);
-    }
-    else if (x > MENU_NEW_GAME_X + 1 && x <= MENU_NEW_GAME_X + MENU_START_COL && y > MENU_NEW_GAME_Y&& y <= MENU_NEW_GAME_Y + MENU_START_ROW) {
-        return 1;
-    }
-    else if (x > MENU_CONTINUE_GAME_X + 1 && x <= MENU_CONTINUE_GAME_X + MENU_START_COL && y > MENU_CONTINUE_GAME_Y&& y <= MENU_CONTINUE_GAME_Y + MENU_START_ROW && saved) {
-        return 2;
     }
     return 0;
 }
@@ -797,11 +879,14 @@ int UIManager::gameProcess(const int& x, const int& y, const bool& end, int* sav
         {
             if (y > MAP_SAVE_Y + i * 2 && y <= MAP_SAVE_Y + (i + 1) * 2 - 1) {
                 *saveIdx = i;
+                //누른 버튼의 인덱스를 저장.
                 gotoxy(MAP_SAVE_X + 2, MAP_SAVE_Y + (i + 1) * 2 - 1);
                 printSaves(MENU_CHOOSE_FCOLOR, MENU_CHOOSE_BGCOLOR, i);
                 Sleep(CLICK_DELAY);
                 gotoxy(MAP_SAVE_X + 2, MAP_SAVE_Y + (i + 1) * 2 - 1);
                 printSaves(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, i);
+
+                saves[i] = true;
                 break;
             }
         }

@@ -9,7 +9,7 @@
 #define BOMB_SHAPE "※"
 #define MAP_X 60		//맵의 중앙 x
 #define MAP_Y 20		//맵의 중앙 y
-#define SAVE_MAX 3		//세이브 가능한 최대 개수
+#define SAVE_MAX 4		//세이브 가능한 최대 개수
 
 #define END_MSG_X 28
 #define END_MSG_Y 15
@@ -72,6 +72,12 @@
 #define MENU_HEIGHT_PLUS_1_Y MENU_HEIGHT_START_Y
 #define MENU_HEIGHT_PLUS_10_X (MENU_HEIGHT_START_X + 20)
 #define MENU_HEIGHT_PLUS_10_Y (MENU_HEIGHT_START_Y + 2)
+
+//불러오기 메뉴 좌표
+#define LOAD_ROW 6
+#define LOAD_COL 46
+#define LOAD_X 35
+#define LOAD_Y 10
 
 //게임 시작 박스 좌표
 #define MENU_START_ROW 3

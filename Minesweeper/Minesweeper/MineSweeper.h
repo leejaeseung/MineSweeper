@@ -10,17 +10,21 @@ class MineSweeper{
 private:
 	UIManager UM;
 	Clicker clk;
-	unique_ptr<Map> map;
+	Map map;
 	vector<Map> replayMap;
+	vector<Map> saveMap;
 	bool started;
 	bool saved;
 	bool end;
+	bool load;
 	int saveIdx;
-	
+	int loadIdx;
+	void replay();
+	void gameStart();
+	void save(const Map& nowMap);
 public:
 	MineSweeper();
 	~MineSweeper() = default;
 	void play();
-	void replay();
-	void gameStart();
+	
 };

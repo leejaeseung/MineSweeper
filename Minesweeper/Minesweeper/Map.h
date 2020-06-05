@@ -18,11 +18,14 @@ class Map {
 		int checkMine(const int& x, const int& y);
 		void end();
 	public:
-		Map() = delete;
+		Map() = default;
 		Map(const int& mode, const int& width, const int& height);
 		~Map() = default;
 		Map(const Map& m);
 		int click(const int& x, const int& y);
 		unique_ptr<int[]>& operator[](const int& idx) const;
+		Map& operator=(const Map& myMap) noexcept;
 		double getAchiveRate() const;
+		int getWidth() const;
+		int getHeight() const;
 };

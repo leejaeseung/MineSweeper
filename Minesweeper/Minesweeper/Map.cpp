@@ -126,8 +126,42 @@ unique_ptr<int[]>& Map::operator[](const int& idx) const
     }
 }
 
+Map& Map::operator=(const Map& myMap) noexcept
+{
+    if (this == &myMap)  return *this;
+
+    mode = myMap.mode;
+    width = myMap.width;
+    height = myMap.height;
+    mineCnt = myMap.mineCnt;
+    openCnt = myMap.openCnt;
+    allCnt = myMap.allCnt;
+
+    map = make_unique<unique_ptr<int[]>[]>(height);
+    for (int i = 0; i < height; i++)
+    {
+        map[i] = make_unique<int[]>(width * 2);
+        for (int j = 0; j < width * 2; j++)
+        {
+            map[i][j] = myMap[i][j];
+        }
+    }
+
+    return *this;
+}
+
 double Map::getAchiveRate() const
 {
     //진행률을 반환
     return ((double)(openCnt) / (double)(allCnt - mineCnt)) * 100.0;
+}
+
+int Map::getWidth() const
+{
+    return width;
+}
+
+int Map::getHeight() const
+{
+    return height;
 }

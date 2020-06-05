@@ -2,7 +2,9 @@
 #include <memory>
 #include "Map.h"
 #include "config.h"
+#include <vector>
 using std::unique_ptr;
+using std::vector;
 
 class UIManager {
 protected:
@@ -36,6 +38,7 @@ private:
 
 	void printGoMenu(const double& rate);
 	void printSaves(const int& color, const int& bgcolor, const int& idx);
+	void printLoadZone(int& x, int& y, const int& color, const int& bgcolor, const Map& nowMap);
 
 	void eraseConsole();
 	
@@ -46,9 +49,10 @@ public:
 	UIManager();
 	~UIManager() = default;
 	void printMenu(const bool& saved);
+	void printLoad(const vector<Map>& saveMap);
 	void printMap(const Map& map);
 	void printEndMsg(const bool& win);
-	int menuProcess(const int& x, const int& y, const bool& saved);
+	int menuProcess(const int& x, const int& y, const bool& saved, const bool& load, int* loadIdx, const vector<Map>& saveMap);
 	int gameProcess(const int& x, const int& y, const bool& end, int* saveIdx);
 	void tightXY(int* x, int* y);
 	void reset();
