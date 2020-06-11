@@ -19,6 +19,9 @@ UIManager::UIManager()
 void UIManager::printMenu(const bool& saved)
 {
     int x = MENU_TITLE_X, y = MENU_TITLE_Y;
+    mode = 1;
+    width = 10;
+    height = 10;
 
     eraseConsole();
 
@@ -132,6 +135,20 @@ void UIManager::printLoadZone(int& x, int& y, const int& color, const int& bgcol
     cout << "    P R O G R E S S : " << setw(6) << fixed << nowMap.getAchiveRate() << " %               ";
     setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
     cout << "ㅣ";
+    gotoxy(x, y++);
+    cout << "ㅣ";
+    setColor(color, bgcolor);
+    if (nowMap.getMode() == 1) {
+        cout << "          L E V E L :   E A S Y              ";
+    }
+    else if (nowMap.getMode() == 2) {
+        cout << "          L E V E L :   N O R M A L          ";
+    }
+    else if (nowMap.getMode() == 3){
+        cout << "          L E V E L :   H A R D              ";
+    }
+    setColor(MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR);
+    cout << "ㅣ";
 }
 
 void UIManager::printLoadClose(const int& color, const int& bgcolor)
@@ -170,6 +187,8 @@ void UIManager::printLoad(const vector<Map>& saveMap)
             cout << "ㅣ                                             ㅣ";
             gotoxy(x, y++);
             cout << "ㅣ             N    O    N    E                ㅣ";
+            gotoxy(x, y++);
+            cout << "ㅣ                                             ㅣ"; 
             gotoxy(x, y++);
             cout << "ㅣ                                             ㅣ";
         }
@@ -853,19 +872,19 @@ int UIManager::menuProcess(const int& x, const int& y, const bool& saved, const 
         if (x > LOAD_X + 1&& x <= LOAD_X + LOAD_COL && y > LOAD_Y&& y <= LOAD_Y + (LOAD_ROW * SAVE_MAX) - 1) {
             for (int i = 0; i < SAVE_MAX; i++)
             {
-                if (saves[i] && y > LOAD_Y + i * 6 + 2 && y <= LOAD_Y + (i + 1) * 6 - 1) {
+                if (saves[i] && y > LOAD_Y + i * LOAD_ROW + 2 && y <= LOAD_Y + (i + 1) * LOAD_ROW - 1) {
                     *loadIdx = i;
                     //누른 버튼의 인덱스를 저장.
                     int start_x = LOAD_X;
-                    int start_y = LOAD_Y + i * 6 + 3;
+                    int start_y = LOAD_Y + i * LOAD_ROW + 3;
                     printLoadZone(start_x, start_y, MENU_CHOOSE_FCOLOR, MENU_CHOOSE_BGCOLOR, saveMap[i]);
                     Sleep(CLICK_DELAY);
                     start_y -= 3;
                     printLoadZone(start_x, start_y, MENU_DEFAULT_FCOLOR, MENU_DEFAULT_BGCOLOR, saveMap[i]);
-                    break;
+                    return 3;
                 }
             }
-            return 3;
+            return 0;
         }
         else if (x > LOAD_CLOSE_X + 1 && x <= LOAD_CLOSE_X + LOAD_COL && y > LOAD_CLOSE_Y&& y <= LOAD_CLOSE_Y + 1) {
             gotoxy(LOAD_CLOSE_X, LOAD_CLOSE_Y + 1);

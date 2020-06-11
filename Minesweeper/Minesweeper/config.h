@@ -3,9 +3,7 @@
 
 //게임 진행 관련
 #define CLICK_DELAY 100
-#define MINE_COLOR 120
 #define DEFAULT_SHAPE "●"
-#define BOMB_COLOR 96
 #define BOMB_SHAPE "※"
 #define MAP_X 60		//맵의 중앙 x
 #define MAP_Y 20		//맵의 중앙 y
@@ -74,7 +72,7 @@
 #define MENU_HEIGHT_PLUS_10_Y (MENU_HEIGHT_START_Y + 2)
 
 //불러오기 메뉴 좌표
-#define LOAD_ROW 6
+#define LOAD_ROW 7
 #define LOAD_COL 46
 #define LOAD_X 35
 #define LOAD_Y 10
