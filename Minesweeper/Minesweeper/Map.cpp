@@ -3,7 +3,8 @@
 using std::make_unique;
 
 Map::Map(const int& mode, const int& width, const int& height)
-    :mode(mode), width(width), height(height), mineCnt((double)(width* height)* ((double)mode / 10)), openCnt(0), allCnt(width* height), map(make_unique<unique_ptr<int[]>[]>(height))
+    :mode(mode), width(width), height(height), mineCnt((double)(width* height)* ((double)mode / 10))
+    , openCnt(0), allCnt(width* height), map(make_unique<unique_ptr<int[]>[]>(height))
 {
     for (int i = 0; i < height; i++)
     {
@@ -74,7 +75,8 @@ void Map::end()
 }
 
 Map::Map(const Map& m)
-    :mode(m.mode), width(m.width), height(m.height), mineCnt(m.mineCnt), openCnt(m.openCnt), allCnt(m.allCnt), map(make_unique<unique_ptr<int[]>[]>(m.height))
+    :mode(m.mode), width(m.width), height(m.height), mineCnt(m.mineCnt)
+    , openCnt(m.openCnt), allCnt(m.allCnt), map(make_unique<unique_ptr<int[]>[]>(m.height))
 {
     for (int i = 0; i < height; i++)
     {
@@ -111,7 +113,8 @@ int Map::click(const int& x, const int& y)
 
             if (nx < 0 || ny < 0 || nx >= width * 2 || ny >= height) continue;      //맵의 범위 밖으로 나가지 않게
             if (map[ny][nx] == 10)   continue;          //지뢰가 있는 곳은 탐색x
-            click(nx, ny);
+            if (click(nx, ny) == 2)
+                return 2;
         }
     }
     return 1;   //하나라도 밝혔다면

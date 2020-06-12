@@ -10,7 +10,7 @@ Clicker::Clicker()
     SetConsoleMode(CIN, md & ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT);
 }
 
-int Clicker::get_input(const WORD* vkey, COORD* pos)
+int Clicker::get_input(COORD* pos)
 {
     INPUT_RECORD input_record;
     DWORD input_count;
@@ -50,7 +50,7 @@ pair<int, int> Clicker::getPos()
 
     while (true) {
         if (be_input()) {
-            if (get_input(&key, &pos) != 0)
+            if (get_input(&pos) != 0)
             {
                 return pair<int, int>{pos.X, pos.Y};
              }

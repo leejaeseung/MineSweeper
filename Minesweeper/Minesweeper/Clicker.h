@@ -8,9 +8,8 @@ private:
     HANDLE COUT = 0;
     HANDLE CIN = 0;
     DWORD md;
-    WORD key;
     COORD pos;
-    int get_input(const WORD* vkey, COORD* pos);
+    int get_input(COORD* pos);
     int be_input();
 public:
     Clicker();
