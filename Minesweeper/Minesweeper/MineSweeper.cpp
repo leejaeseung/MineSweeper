@@ -48,27 +48,23 @@ void MineSweeper::play()
                     continue;
                 case OPEN_CELL:
                     UM.printMap(map);
-                    replayMap.push_back(map);
                     continue;       //게임을 계속 진행
                 case GAME_WIN:
                     //게임 클리어 : 클리어 메세지 출력
                    
                     UM.printMap(map);
                     UM.printEndMsg(true);
-
                     break;
                 case GAME_FAIL:
                     //게임 패배 : 패배 메세지 출력
                     
                     UM.printMap(map);
                     UM.printEndMsg(false);
-                    
                     break;
                 }
                 //게임을 종료, 리플레이
                 end = true;
-                replayMap.push_back(map);
-                replay();
+                replay(map);
                 continue;
             case CLICK_BACK_TO_MENU:
                 //메뉴로 돌아감.
@@ -112,9 +108,9 @@ void MineSweeper::play()
     }
 }
 
-void MineSweeper::replay()
+void MineSweeper::replay(const Map& map)
 {
-    for (auto nowMap : replayMap) {
+    for (auto nowMap : map.getReplayMap()) {
         Sleep(1000);
         UM.printMap(nowMap);
     }
@@ -127,8 +123,6 @@ void MineSweeper::gameStart()
     load = false;
     UM.set(map.getMode(), map.getWidth(), map.getHeight());
     UM.printMap(map);
-    replayMap.clear();
-    replayMap.push_back(map);
 }
 
 void MineSweeper::save(const Map& nowMap)

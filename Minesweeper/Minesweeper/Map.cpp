@@ -38,6 +38,8 @@ Map::Map(const int& mode, const int& width, const int& height)
                 map[i][j] = checkMine(j, i);
         }
     }
+    replayMap.push_back(*this);
+    //맵의 처음 생성 시 리플레이 저장.
 }
 
 int Map::checkMine(const int& x, const int& y)
@@ -90,6 +92,14 @@ Map::Map(const Map& m)
 
 int Map::click(const int& x, const int& y)
 {
+    int ret = unfold(x, y);
+    if(ret != 0)       //이미 밝혀진 곳을 클릭한 게 아니라면 리플레이에 저장
+        replayMap.push_back(*this);
+    return ret;
+}
+
+int Map::unfold(const int& x, const int& y)
+{
     if (map[y][x] == 10 || map[y][x + 1] == 10) {       //지뢰를 선택할 시
         end();
         return 3;
@@ -113,7 +123,7 @@ int Map::click(const int& x, const int& y)
 
             if (nx < 0 || ny < 0 || nx >= width * 2 || ny >= height) continue;      //맵의 범위 밖으로 나가지 않게
             if (map[ny][nx] == 10)   continue;          //지뢰가 있는 곳은 탐색x
-            if (click(nx, ny) == 2)
+            if (unfold(nx, ny) == 2)
                 return 2;
         }
     }
@@ -149,6 +159,24 @@ Map& Map::operator=(const Map& myMap) noexcept
             map[i][j] = myMap[i][j];
         }
     }
+    replayMap = myMap.replayMap;
+
+    return *this;
+}
+
+Map& Map::operator=(Map&& myMap) noexcept
+{
+    if (this == &myMap)  return *this;
+
+    mode = myMap.mode;
+    width = myMap.width;
+    height = myMap.height;
+    mineCnt = myMap.mineCnt;
+    openCnt = myMap.openCnt;
+    allCnt = myMap.allCnt;
+
+    map = move(myMap.map);
+    replayMap = myMap.replayMap;
 
     return *this;
 }
@@ -187,4 +215,9 @@ int Map::getHeight() const
 int Map::getMode() const
 {
     return mode;
+}
+
+vector<Map> Map::getReplayMap() const
+{
+    return replayMap;
 }

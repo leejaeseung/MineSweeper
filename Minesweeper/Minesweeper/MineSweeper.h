@@ -11,7 +11,6 @@ private:
 	UIManager UM;
 	Clicker clk;
 	Map map;
-	vector<Map> replayMap;
 	vector<Map> saveMap;
 	bool started;
 	bool saved;
@@ -19,7 +18,7 @@ private:
 	bool load;
 	int saveIdx;
 	int loadIdx;
-	void replay();
+	void replay(const Map& map);
 	void gameStart();
 	void save(const Map& nowMap);
 public:
