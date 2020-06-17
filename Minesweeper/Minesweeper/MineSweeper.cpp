@@ -1,8 +1,5 @@
 #include "MineSweeper.h"
 #include <time.h>
-//#include <stdlib.h>
-//#include <iostream>
-//using namespace std;
 
 #define NO_ACTION 0
 #define NEW_GAME 1
@@ -29,6 +26,7 @@ void MineSweeper::play()
 {
     while (1)
     {
+        Sleep(20);
         auto clk_pos = clk.getPos();
 
         if (started) {
@@ -121,7 +119,6 @@ void MineSweeper::gameStart()
     started = true;
     end = false;
     load = false;
-    UM.set(map.getMode(), map.getWidth(), map.getHeight());
     UM.printMap(map);
 }
 
